@@ -13,6 +13,7 @@ const morgan = require('morgan');
 const { connectDB } = require('./config/db');
 const AsyncError = require('./utils/AsyncError');
 const { logger, requestLogger } = require('./utils/logger');
+const corsOptions = require('./config/corsOptions')
 
 
 
@@ -54,15 +55,12 @@ const limiter = rateLimit({
 });
 app.use('/api/', limiter);
 
-// Middleware
-// Update your CORS configuration
-app.use(cors({
-    origin: process.env.CORS_ORIGIN?.split(',') || 'http://localhost:5173',
-    credentials: true,
-    optionsSuccessStatus: 200,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-  }));
+
+
+// CORS must be before other middleware
+app.use(cors(corsOptions))
+
+
 
   // Add after other middleware but before routes
 app.use(requestLogger);

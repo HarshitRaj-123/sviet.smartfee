@@ -18,7 +18,12 @@ export const useAuth = () => {
 
   const login = useCallback(async (credentials) => {
     try {
-      const response = await loginMutation(credentials)
+
+      const adjustedCredentials = {
+        contactEmail: credentials.email,
+        password: credentials.password
+      };
+      const response = await loginMutation(adjustedCredentials)
       
       if (!response.user || !response.token) {
         throw new Error('Invalid login response')

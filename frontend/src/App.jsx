@@ -7,7 +7,7 @@ import ErrorBoundary from './components/common/ErrorBoundary'
 import MainLayout from './components/layout/MainLayout'
 import { AnimatedRoutes } from './components/layout/AnimatedRoutes'
 import './App.css'
-import './styles/transitions.css'
+// import './styles/transitions.css'
 
 // Import components
 const Login = lazy(() => import('./pages/Login'))
