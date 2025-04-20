@@ -77,8 +77,8 @@ const CONSTANTS = {
     
     if (!data.studentName?.trim()) errors.push('Student name is required');
     if (!data.rollNo?.trim()) errors.push('Roll number is required');
-    if (!validateEmail(data.contactEmail)) errors.push('Invalid email format');
-    if (!validatePhone(data.contactPhone)) errors.push('Invalid phone format');
+    if (!validateEmail(data.email)) errors.push('Invalid email format');
+    if (!validatePhone(data.phone)) errors.push('Invalid phone format');
     
     return errors;
   };
@@ -101,9 +101,9 @@ const CONSTANTS = {
         status: student.feeStatus
       },
       contact: {
-        name: student.contactName,
-        email: student.contactEmail,
-        phone: student.contactPhone
+        name: student.name,
+        email: student.email,
+        phone: student.phone
       },
       institute: student.institute
     }
@@ -160,7 +160,7 @@ const CONSTANTS = {
       const newStudent = await Student.create(req.body);
   
       await sendEmail({
-        to: req.body.contactEmail,
+        to: req.body.email,
         subject: 'Welcome to Our Institution',
         template: 'welcome',
         data: {
@@ -370,7 +370,7 @@ exports.getStudents = async (req, res, next) => {
             query.$or = [
                 { studentName: { $regex: search, $options: 'i' } }, // Search by name
                 { rollNo: { $regex: search, $options: 'i' } },       // Search by roll number
-                { contactEmail: { $regex: search, $options: 'i' } } // Search by email
+                { email: { $regex: search, $options: 'i' } } // Search by email
             ];
         }
 
@@ -467,9 +467,9 @@ exports.getStudentByRollNo = async (req, res, next) => {
                 feeStatus: student.feeStatus,
                 institute: student.institute,
                 contact: {
-                    name: student.contactName,
-                    phone: student.contactPhone,
-                    email: student.contactEmail
+                    name: student.name,
+                    phone: student.phone,
+                    email: student.email
                 }
             }
         };
@@ -502,16 +502,16 @@ const loginLimiter = rateLimit({
 
 exports.login = [loginLimiter,async (req, res) => {
     try {
-        const { contactEmail, password } = req.body;
+        const { email, password } = req.body;
 
-        if (!contactEmail || !password) {
+        if (!email || !password) {
             return res.status(400).json({
                 success: false,
-                message: 'Please provide contactEmail and password'
+                message: 'Please provide email and password'
             });
         }
 
-        const user = await Student.findOne({ contactEmail }).select('+password');
+        const user = await Student.findOne({ email }).select('+password');
         const fakeHash = await bcrypt.hash('dummy', 10);
         const isMatch = user
             ? await bcrypt.compare(password, user.password)
@@ -543,7 +543,7 @@ exports.login = [loginLimiter,async (req, res) => {
             token,
             user: {
                 id: user.id,
-                contactEmail: user.contactEmail,
+                email: user.email,
                 role: user.role,
                 name: user.name
             }

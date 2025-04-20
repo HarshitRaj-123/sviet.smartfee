@@ -22,8 +22,8 @@ exports.checkInstallments = async () => {
         $project: {
           _id: 1,
           studentName: 1,
-          contactEmail: 1,
-          contactPhone: 1,
+          email: 1,
+          phone: 1,
           installment: '$installments'
         }
       }
@@ -71,8 +71,8 @@ const sendNotifications = async (notifications) => {
       
       // Send email
       await sendNotification({
-        email: student.contactEmail,
-        phone: student.contactPhone,
+        email: student.email,
+        phone: student.phone,
         message: notification.message
       });
 

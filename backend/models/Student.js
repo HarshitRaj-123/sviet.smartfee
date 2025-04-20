@@ -100,7 +100,7 @@ const studentSchema = new Schema({
     trim: true,
     uppercase: true
   },
-  primaryContact: {
+  parentContact: {
     name: {
       type: String,
       required: [true, 'Contact name is required'],
@@ -142,7 +142,7 @@ const studentSchema = new Schema({
 
 // Indexes
 studentSchema.index({ rollNumber: 1 });
-studentSchema.index({ 'primaryContact.email': 1 });
+studentSchema.index({ 'parentContact.email': 1 });
 
 // Pre-save middleware to calculate feeSummary
 studentSchema.pre('save', function(next) {

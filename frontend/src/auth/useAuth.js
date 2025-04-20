@@ -20,7 +20,7 @@ export const useAuth = () => {
     try {
 
       const adjustedCredentials = {
-        contactEmail: credentials.email,
+        email: credentials.email,
         password: credentials.password
       };
       const response = await loginMutation(adjustedCredentials)
