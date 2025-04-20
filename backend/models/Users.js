@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const ROLES = {
   ADMIN: 'admin',
   ACCOUNTANT: 'accountant',
-  PARENT: 'parent'
+  STUDENT: 'student',
 };
 
 const PERMISSIONS = {
@@ -67,7 +67,7 @@ const userSchema = new mongoose.Schema({
             PERMISSIONS.MANAGE_FEES,
             PERMISSIONS.VIEW_REPORTS
           ];
-        case ROLES.PARENT:
+        case ROLES.STUDENT:
           return [
             PERMISSIONS.VIEW_STUDENT_RECORDS,
             PERMISSIONS.MAKE_PAYMENTS

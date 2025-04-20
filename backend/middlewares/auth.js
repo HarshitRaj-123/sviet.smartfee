@@ -3,11 +3,11 @@ const User = require('../models/Users');
 
 // Optimized role hierarchy with clear permissions
 const ROLE_HIERARCHY = {
-//   'super-admin': new Set(['super-admin', 'sub-super-admin', 'institute-admin', 'accountant', 'parents']),
-//   'sub-super-admin': new Set(['sub-super-admin', 'institute-admin', 'accountant', 'parents']),
-  'admin': new Set(['admin', 'accountant', 'parents']),
-  'accountant': new Set(['accountant', 'parents']),
-  'parents': new Set(['parents'])
+//   'super-admin': new Set(['super-admin', 'sub-super-admin', 'institute-admin', 'accountant', 'student']),
+//   'sub-super-admin': new Set(['sub-super-admin', 'institute-admin', 'accountant', 'student']),
+  'admin': new Set(['admin', 'accountant', 'student']),
+  'accountant': new Set(['accountant', 'student']),
+  'student': new Set(['student'])
 };
 
 const COOKIE_CONFIG = {

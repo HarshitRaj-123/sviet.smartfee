@@ -14,10 +14,10 @@ requiredEnvVars.forEach(variable => {
 // Login controller with rate limiting and enhanced security
 const login = async (req, res) => {
   try {
-    const { contactEmail, password } = req.body;
+    const { email, password } = req.body;
 
     // Enhanced validation
-    if (!contactEmail || !password) {
+    if (!email || !password) {
       return res.status(400).json({
         success: false,
         message: 'Please provide both email and password'
@@ -26,7 +26,7 @@ const login = async (req, res) => {
 
     // Email format validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(contactEmail)) {
+    if (!emailRegex.test(email)) {
       return res.status(400).json({
         success: false,
         message: 'Please provide a valid email address'
@@ -35,7 +35,7 @@ const login = async (req, res) => {
 
     // Find user with case-insensitive email match
     const user = await User.findOne({
-      contactEmail: { $regex: new RegExp(`^${contactEmail}$`, 'i') }
+      email: { $regex: new RegExp(`^${email}$`, 'i') }
     }).select('+password');
 
     // Use constant time comparison to prevent timing attacks
@@ -45,7 +45,7 @@ const login = async (req, res) => {
       : await bcrypt.compare(password, fakeHash);
 
     if (!user || !isMatch) {
-      logger.warn(`Failed login attempt for email: ${contactEmail}`);
+      logger.warn(`Failed login attempt for email: ${email}`);
       return res.status(401).json({
         success: false,
         message: 'Invalid credentials'
@@ -58,7 +58,7 @@ const login = async (req, res) => {
         id: user.id,
         role: user.role,
         institution: user.institution,
-        email: user.contactEmail,
+        email: user.email,
         iat: Date.now()
       },
       process.env.JWT_SECRET,
@@ -101,7 +101,7 @@ const login = async (req, res) => {
       data: {
         user: {
           id: user.id,
-          contactEmail: user.contactEmail,
+          email: user.email,
           role: user.role,
           name: user.name,
           institution: user.institution

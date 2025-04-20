@@ -8,7 +8,7 @@ const { loginLimiter } = require('../middlewares/loginLimiter');
 const ROLES = {
   ADMIN: 'admin',
   ACCOUNTANT: 'accountant',
-  PARENT: 'parent'
+  STUDENT: 'student'
 };
 
 // Public routes
@@ -45,15 +45,15 @@ router.get('/accountant/reports', (req, res) => {
   res.json({ message: 'Financial Reports' });
 });
 
-// Parent routes
-router.use('/parent', authorize([ROLES.PARENT]));
-router.get('/parent/dashboard', (req, res) => {
-  res.json({ message: 'Parent Dashboard' });
+// student routes
+router.use('/student', authorize([ROLES.STUDENT]));
+router.get('/student/dashboard', (req, res) => {
+  res.json({ message: 'student Dashboard' });
 });
-router.get('/parent/payments', (req, res) => {
+router.get('/student/payments', (req, res) => {
   res.json({ message: 'Payment Management' });
 });
-router.get('/parent/student-records', (req, res) => {
+router.get('/student/student-records', (req, res) => {
   res.json({ message: 'Student Records' });
 });
 
