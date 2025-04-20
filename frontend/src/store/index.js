@@ -36,6 +36,7 @@ export const useStore = create(
       partialize: (state) => ({
         auth: state.auth,
         ui: state.ui,
+        offline: state.offline // Added offline state to persist
       }),
     }
   )

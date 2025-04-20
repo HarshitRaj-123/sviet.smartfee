@@ -1,5 +1,5 @@
 import { ActionQueue } from './queue'
-import { CRDT } from './crdt'
+import { CRDT } from './crdt/crdt'
 
 let syncInterval = null
 

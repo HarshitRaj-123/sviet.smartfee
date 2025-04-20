@@ -1,4 +1,5 @@
 import { useStore } from '../store'
+import api from '../config/axios'
 
 export class ActionQueue {
   static async addAction(action) {
@@ -10,6 +11,11 @@ export class ActionQueue {
       timestamp: Date.now(),
       retryCount: 0,
     })
+
+    // Try to process queue immediately if online
+    if (navigator.onLine) {
+      this.processQueue()
+    }
   }
 
   static async processQueue() {
@@ -41,13 +47,17 @@ export class ActionQueue {
   }
 
   static async processAction(action) {
-    // Implementation depends on action type
+    // Implementation for CRUD operations
     switch (action.type) {
       case 'CREATE':
+        return await api.post(action.endpoint, action.data)
+      
       case 'UPDATE':
+        return await api.put(`${action.endpoint}/${action.id}`, action.data)
+      
       case 'DELETE':
-        // Handle CRUD operations
-        break
+        return await api.delete(`${action.endpoint}/${action.id}`)
+      
       default:
         throw new Error(`Unknown action type: ${action.type}`)
     }
